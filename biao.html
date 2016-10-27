@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>标题</title>
+	<meta name="keywords" content="">
+	<meta name="description" content="">
+	<style>
+		#box{
+			width: 420px;
+			height: 420px;
+			margin: 50px auto;
+		}
+		#cvs{background: white;}
+	</style>
+</head>
+<body>
+	<div id="box">
+		<canvas id="cvs" width="420" height="420"></canvas>
+	</div>
+	<script type="text/javascript">
+		var cvs=document.getElementById('cvs')
+		var ctx=cvs.getContext("2d");
+		function clock(){
+			//获取当前的时间
+			var time=new Date();
+			var h=time.getHours();
+			var m=time.getMinutes();
+			var s=time.getSeconds();
+			h>11?h-12:h;
+			h=h+(m/60);
+			m=m+(s/60);
+
+			//2.钟表盘
+			ctx.beginPath();
+			ctx.arc(210,210,200,0,360,false);
+			ctx.clip();
+			ctx.closePath();
+
+			//画背景图片
+			var img=new Image();
+			img.src="01.jpg";
+			img.onload=function  () {
+			  ctx.drawImage(img,0,0,420,420);
+			  ctx.beginPath();
+			  ctx.arc(210,210,200,0,360,false);
+			  ctx.strokeStyle="#60d9f8";
+			  ctx.linWidth=10;
+			  ctx.stroke();
+
+			  //分刻度
+			  for (var i = 0; i < 60; i++) {
+			  	ctx.save();//保持当前绘制状态
+			  	ctx.beginPath();
+			  	ctx.translate(210,210);
+			  	ctx.rotate(i*6*Math.PI/180);
+			  	ctx.moveTo(0,-185);
+			  	ctx.lineTo(0,-195);
+			  	ctx.strokeStyle="#fef319";
+			  	ctx.linWidth=5;
+			  	ctx.stroke();
+			  	ctx.closePath();
+			  	ctx.restore();
+			  	//恢复保存之前的绘制状态
+			  }
+			  //时刻表
+			  for (var i = 0; i < 12; i++) {
+			  	ctx.save();//保持当前绘制状态
+			  	ctx.beginPath();
+			  	ctx.translate(210,210);
+			  	ctx.rotate(i*30*Math.PI/180);
+			  	ctx.moveTo(0,-175);
+			  	ctx.lineTo(0,-195);
+			  	ctx.strokeStyle="#60d9f8";
+			  	ctx.linWidth=8;
+			  	ctx.stroke();
+			  	ctx.closePath();
+			  	ctx.restore();
+			  	//恢复保存之前的绘制状态
+			  };
+			  //时针
+			  	ctx.save();//保持当前绘制状态
+			  	ctx.beginPath();
+			  	ctx.translate(210,210);
+			  	ctx.rotate(h*30*Math.PI/180);
+			  	ctx.moveTo(0,12);
+			  	ctx.lineTo(0,-130);
+			  	ctx.strokeStyle="#60d9f8";
+			  	ctx.linWidth=8;
+			  	ctx.stroke();
+			  	ctx.closePath();
+			  	ctx.restore();
+			  	//恢复保存之前的绘制状态
+			  	//分针
+			  	ctx.save();//保持当前绘制状态
+			  	ctx.beginPath();
+			  	ctx.translate(210,210);
+			  	ctx.rotate(i*6*Math.PI/180);
+			  	ctx.moveTo(0,12);
+			  	ctx.lineTo(0,-150);
+			  	ctx.strokeStyle="#fef319";
+			  	ctx.linWidth=5;
+			  	ctx.stroke();
+			  	ctx.closePath();
+			  	ctx.restore();
+			  	//恢复保存之前的绘制状态
+
+
+			  	//秒针
+			  	ctx.save();//保持当前绘制状态
+			  	ctx.beginPath();
+			  	ctx.translate(210,210);
+			  	ctx.rotate(s*6*Math.PI/180);
+			  	ctx.moveTo(0,12);
+			  	ctx.lineTo(0,-172);
+			  	ctx.strokeStyle="#fb1f11";
+			  	ctx.linWidth=3;
+			  	ctx.stroke();
+			  	ctx.closePath();
+				
+				//秒针上的圆
+				ctx.beginPath();
+				ctx.arc(0,-155,6,0,360,false);
+				ctx.strokeStyle="#fb1f11";
+				ctx.fillStyle="#fef319";
+				ctx.lineWidth=3;
+				ctx.fill();
+				ctx.stroke();
+				ctx.closePath();
+
+				//中心圆
+				ctx.beginPath();
+				ctx.arc(0,0,7,0,360,false);	
+				ctx.strokeStyle="#fb1f11";
+				ctx.fillStyle="#fef319";
+				ctx.linWidth=3;
+				ctx.fill();
+				ctx.stroke();
+				ctx.closePath();
+				ctx.restore();
+
+				//显示当前时间
+				var h2=time.getHours();
+				var m2=time.getMinutes();
+				var str1=h2<10?("0"+h2):h2;
+				var str2=h2<10?("0"+m2):m2;
+				ctx.font="25px 微软雅黑";
+				ctx.fillStyle="#fb1f11";
+				ctx.fillText(str1+":"+str2,180,320);
+			}
+		}
+		clock();
+		setInterval(clock,1000);
+		
+	</script>
+</body>
+</html>
